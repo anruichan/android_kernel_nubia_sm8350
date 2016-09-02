@@ -596,9 +596,9 @@ static int gsx_gesture_ist(struct goodix_ts_core *cd,
 		ts_info("got valid gesture type 0x%x",
 			gs_event.gesture_type);
 		if((gsx_gesture->gesture_data == 0xcc)&&(gesture_flag)){
-		input_report_key(cd->input_dev, KEY_F10, 1);
+		input_report_key(cd->input_dev, KEY_WAKEUP, 1);
 		input_sync(cd->input_dev);
-		input_report_key(cd->input_dev, KEY_F10, 0);
+		input_report_key(cd->input_dev, KEY_WAKEUP, 0);
 		input_sync(cd->input_dev);
 		}
 		if(gsx_gesture->gesture_data == 0x4c){
