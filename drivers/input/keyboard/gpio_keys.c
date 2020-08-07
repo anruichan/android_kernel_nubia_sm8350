@@ -289,6 +289,21 @@ out:
 }
 
 #ifdef CONFIG_NUBIA_KEYBOARD_GAMESWITCH
+static void set_gameswitch(struct input_dev *input, int state) {
+	int key;
+
+	if (state)
+		key = KEY_GAMESWITCH_ON;
+	else
+		key = KEY_GAMESWITCH_OFF;
+
+	input_report_key(input, key, 1);
+	input_sync(input);
+	input_report_key(input, key, 0);
+	input_sync(input);
+}
+#endif
+#ifdef CONFIG_NUBIA_KEYBOARD_GAMESWITCH
 static ssize_t gpio_keys_store_GamekeyStatus(struct device *dev,		\
 				      struct device_attribute *attr,	\
 				      const char *buf,			\
@@ -438,7 +453,14 @@ static void gpio_keys_gpio_report_event(struct gpio_button_data *bdata)
 			input_event(input, type, button->code, button->value);
 #endif
 	} else {
+#ifdef CONFIG_NUBIA_KEYBOARD_GAMESWITCH
+		if (*bdata->code == SW_GAMESWITCH_CHANGE)
+			set_gameswitch(input, state);
+		else
+			input_event(input, type, *bdata->code, state);
+#else
 		input_event(input, type, *bdata->code, state);
+#endif
 #ifdef CONFIG_BOARD_NUBIA
 		pr_err("GPIO_KEY input:code=%d, state=%d\n", button->code, state);
 #endif
@@ -688,6 +710,10 @@ static int gpio_keys_setup_key(struct platform_device *pdev,
 	bdata->code = &ddata->keymap[idx];
 	*bdata->code = button->code;
 	input_set_capability(input, button->type ?: EV_KEY, *bdata->code);
+#ifdef CONFIG_NUBIA_KEYBOARD_GAMESWITCH
+	input_set_capability(input, EV_KEY, KEY_GAMESWITCH_ON);
+	input_set_capability(input, EV_KEY, KEY_GAMESWITCH_OFF);
+#endif
 
 	/*
 	 * Install custom action to cancel release timer and
