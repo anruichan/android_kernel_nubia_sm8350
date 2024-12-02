@@ -1,0 +1,24 @@
+# Nubia configuration options
+
+config BOARD_NUBIA
+	bool "NUBIA device"
+	depends on ARCH_QCOM
+	help
+	  Support for Nubia products
+
+config BOARD_NUBIA_LAHAINA
+	bool "Nubia Lahaina"
+	depends on ARCH_LAHAINA
+	select BOARD_NUBIA
+	help
+	  Support for SM8350-based Nubia variants
+
+menu "Nubia board selection"
+
+config BOARD_NUBIA_NX669J
+	bool "NX669J board"
+	select BOARD_NUBIA_LAHAINA
+	help
+	  Support for Nubia Red Magic 6 / 6 Pro
+
+endmenu
