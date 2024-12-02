@@ -57,6 +57,7 @@ FINAL_DEFCONFIG_BLEND=""
 
 case "$REQUIRED_DEFCONFIG" in
 	${PLATFORM_NAME}-qgki-debug_defconfig )
+		FINAL_DEFCONFIG_BLEND+=" $NUBIA_QGKI_FRAG"
 		FINAL_DEFCONFIG_BLEND+=" $QCOM_DEBUG_FRAG"
 		;&	# Intentional fallthrough
 	${PLATFORM_NAME}-qgki-consolidate_defconfig )
@@ -64,6 +65,7 @@ case "$REQUIRED_DEFCONFIG" in
 		;&	# Intentional fallthrough
 	${PLATFORM_NAME}-qgki_defconfig )
 		# DEBUG_FS fragment.
+		FINAL_DEFCONFIG_BLEND+=" $NUBIA_QGKI_FRAG"
 		FINAL_DEFCONFIG_BLEND+=" $QCOM_DEBUG_FS_FRAG"
 
 		FINAL_DEFCONFIG_BLEND+=" $QCOM_QGKI_FRAG"
