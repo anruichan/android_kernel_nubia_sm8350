@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0-only
 /* Copyright (c) 2017-2020, The Linux Foundation. All rights reserved.
  */
+#ifdef CONFIG_BOARD_NUBIA
+#define DEBUG
+#endif
 #include <linux/module.h>
 #include <linux/init.h>
 #include <linux/slab.h>
@@ -23,9 +26,15 @@
 #include <asoc/wcd-mbhc-v2.h>
 #include <asoc/pdata.h>
 
+#ifdef CONFIG_BOARD_NUBIA
+#define WCD_MBHC_ADC_HS_THRESHOLD_MV    2700
+#define WCD_MBHC_ADC_HPH_THRESHOLD_MV   50
+#define WCD_MBHC_ADC_MICBIAS_MV         2701
+#else
 #define WCD_MBHC_ADC_HS_THRESHOLD_MV    1700
 #define WCD_MBHC_ADC_HPH_THRESHOLD_MV   75
 #define WCD_MBHC_ADC_MICBIAS_MV         1800
+#endif
 #define WCD_MBHC_FAKE_INS_RETRY         4
 
 static int wcd_mbhc_get_micbias(struct wcd_mbhc *mbhc)

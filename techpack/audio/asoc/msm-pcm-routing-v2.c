@@ -7745,6 +7745,16 @@ static const struct snd_kcontrol_new primary_mi2s_rx_mixer_controls[] = {
 	MSM_BACKEND_DAI_PRI_MI2S_RX,
 	MSM_FRONTEND_DAI_MULTIMEDIA30, 1, 0, msm_routing_get_audio_mixer,
 	msm_routing_put_audio_mixer),
+#ifdef CONFIG_BOARD_NUBIA
+	SOC_DOUBLE_EXT("MultiMedia31", SND_SOC_NOPM,
+	MSM_BACKEND_DAI_PRI_MI2S_RX,
+	MSM_FRONTEND_DAI_MULTIMEDIA31, 1, 0, msm_routing_get_audio_mixer,
+	msm_routing_put_audio_mixer),
+	SOC_DOUBLE_EXT("MultiMedia32", SND_SOC_NOPM,
+	MSM_BACKEND_DAI_PRI_MI2S_RX,
+	MSM_FRONTEND_DAI_MULTIMEDIA32, 1, 0, msm_routing_get_audio_mixer,
+	msm_routing_put_audio_mixer),
+#endif
 	SOC_DOUBLE_EXT("DTMF", SND_SOC_NOPM,
 	MSM_BACKEND_DAI_PRI_MI2S_RX,
 	MSM_FRONTEND_DAI_DTMF_RX, 1, 0, msm_routing_get_audio_mixer,
@@ -8226,6 +8236,16 @@ static const struct snd_kcontrol_new primary_mi2s_rx_port_mixer_controls[] = {
 	MSM_BACKEND_DAI_PRI_MI2S_RX,
 	MSM_BACKEND_DAI_SEC_AUXPCM_TX, 1, 0, msm_routing_get_port_mixer,
 	msm_routing_put_port_mixer),
+#ifdef CONFIG_BOARD_NUBIA
+	SOC_DOUBLE_EXT("TX_CDC_DMA_TX_3", SND_SOC_NOPM,
+	MSM_BACKEND_DAI_PRI_MI2S_RX,
+	MSM_BACKEND_DAI_TX_CDC_DMA_TX_3, 1, 0, msm_routing_get_port_mixer,
+	msm_routing_put_port_mixer),
+	SOC_DOUBLE_EXT("TX_CDC_DMA_TX_4", SND_SOC_NOPM,
+	MSM_BACKEND_DAI_PRI_MI2S_RX,
+	MSM_BACKEND_DAI_TX_CDC_DMA_TX_4, 1, 0, msm_routing_get_port_mixer,
+	msm_routing_put_port_mixer),
+#endif
 };
 
 static const struct snd_kcontrol_new quat_mi2s_rx_port_mixer_controls[] = {
@@ -20373,6 +20393,13 @@ static const struct snd_kcontrol_new hsif0_tdm_rx_0_port_mixer_controls[] = {
 		MSM_BACKEND_DAI_HSIF0_TDM_TX_3, 1, 0,
 		msm_routing_get_port_mixer,
 		msm_routing_put_port_mixer),
+#ifdef CONFIG_BOARD_NUBIA
+	SOC_DOUBLE_EXT("TX_CDC_DMA_TX_4", SND_SOC_NOPM,
+		MSM_BACKEND_DAI_PRI_TDM_RX_0,
+		MSM_BACKEND_DAI_TX_CDC_DMA_TX_4, 1, 0,
+		msm_routing_get_port_mixer,
+		msm_routing_put_port_mixer),
+#endif
 };
 
 static const struct snd_kcontrol_new hsif0_tdm_rx_1_port_mixer_controls[] = {
@@ -30194,6 +30221,12 @@ static const struct snd_kcontrol_new rx_cdc_dma_rx_0_port_mixer_controls[] = {
 	MSM_BACKEND_DAI_RX_CDC_DMA_RX_0,
 	MSM_BACKEND_DAI_TX_CDC_DMA_TX_3, 1, 0, msm_routing_get_port_mixer,
 	msm_routing_put_port_mixer),
+#ifdef CONFIG_BOARD_NUBIA
+	SOC_DOUBLE_EXT("TX_CDC_DMA_TX_4", SND_SOC_NOPM,
+	MSM_BACKEND_DAI_RX_CDC_DMA_RX_0,
+	MSM_BACKEND_DAI_TX_CDC_DMA_TX_4, 1, 0, msm_routing_get_port_mixer,
+	msm_routing_put_port_mixer),
+#endif
 	SOC_DOUBLE_EXT("SLIM_8_TX", SND_SOC_NOPM,
 	MSM_BACKEND_DAI_RX_CDC_DMA_RX_0,
 	MSM_BACKEND_DAI_SLIMBUS_8_TX, 1, 0, msm_routing_get_port_mixer,
@@ -32733,6 +32766,10 @@ static const struct snd_soc_dapm_widget msm_qdsp6_widgets[] = {
 		0, 0, 0, 0),
 	SND_SOC_DAPM_AIF_OUT("TX3_CDC_DMA_UL_HL",
 		"TX3_CDC_DMA_HOSTLESS Capture", 0, 0, 0, 0),
+#ifdef CONFIG_BOARD_NUBIA
+	SND_SOC_DAPM_AIF_OUT("TX4_CDC_DMA_UL_HL",
+		"TX4_CDC_DMA_HOSTLESS Capture", 0, 0, 0, 0),
+#endif
 	SND_SOC_DAPM_AIF_OUT("CPE_LSM_UL_HL", "CPE LSM capture",
 		0, 0, 0, 0),
 	SND_SOC_DAPM_AIF_IN("SLIM1_DL_HL", "SLIMBUS1_HOSTLESS Playback",
@@ -34930,6 +34967,7 @@ static const struct snd_soc_dapm_route intercon[] = {
 	{"WSA_CDC_DMA_RX_1 Audio Mixer", "MultiMedia32", "MM_DL32"},
 	{"WSA_CDC_DMA_RX_1", NULL, "WSA_CDC_DMA_RX_1 Audio Mixer"},
 
+#if 0
 	{"RX_CDC_DMA_RX_0 Audio Mixer", "MultiMedia1", "MM_DL1"},
 	{"RX_CDC_DMA_RX_0 Audio Mixer", "MultiMedia2", "MM_DL2"},
 	{"RX_CDC_DMA_RX_0 Audio Mixer", "MultiMedia3", "MM_DL3"},
@@ -34950,6 +34988,7 @@ static const struct snd_soc_dapm_route intercon[] = {
 	{"RX_CDC_DMA_RX_0 Audio Mixer", "MultiMedia31", "MM_DL31"},
 	{"RX_CDC_DMA_RX_0 Audio Mixer", "MultiMedia32", "MM_DL32"},
 	{"RX_CDC_DMA_RX_0", NULL, "RX_CDC_DMA_RX_0 Audio Mixer"},
+#endif
 
 	{"RX_CDC_DMA_RX_1 Audio Mixer", "MultiMedia1", "MM_DL1"},
 	{"RX_CDC_DMA_RX_1 Audio Mixer", "MultiMedia2", "MM_DL2"},
@@ -36062,6 +36101,9 @@ static const struct snd_soc_dapm_route intercon[] = {
 	{"RX_CDC_DMA_RX_1_DL_HL", "Switch", "CDC_DMA_DL_HL"},
 	{"RX_CDC_DMA_RX_1", NULL, "RX_CDC_DMA_RX_1_DL_HL"},
 	{"TX3_CDC_DMA_UL_HL", NULL, "TX_CDC_DMA_TX_3"},
+#ifdef CONFIG_BOARD_NUBIA
+	{"TX4_CDC_DMA_UL_HL", NULL, "TX_CDC_DMA_TX_4"},
+#endif
 	{"LSM1 Mixer", "SLIMBUS_0_TX", "SLIMBUS_0_TX"},
 	{"LSM1 Mixer", "SLIMBUS_1_TX", "SLIMBUS_1_TX"},
 	{"LSM1 Mixer", "SLIMBUS_3_TX", "SLIMBUS_3_TX"},
@@ -36181,6 +36223,9 @@ static const struct snd_soc_dapm_route intercon[] = {
 	{"WSA_CDC_DMA_RX_0", NULL, "WSA_CDC_DMA_RX_0 Port Mixer"},
 
 	{"RX_CDC_DMA_RX_0 Port Mixer", "TX_CDC_DMA_TX_3", "TX_CDC_DMA_TX_3"},
+#ifdef CONFIG_BOARD_NUBIA
+	{"RX_CDC_DMA_RX_0 Port Mixer", "TX_CDC_DMA_TX_4", "TX_CDC_DMA_TX_4"},
+#endif
 	{"RX_CDC_DMA_RX_0 Port Mixer", "SLIM_8_TX", "SLIMBUS_8_TX"},
 	{"RX_CDC_DMA_RX_0", NULL, "RX_CDC_DMA_RX_0 Port Mixer"},
 
@@ -40657,9 +40702,35 @@ static const struct snd_soc_dapm_route intercon_mi2s[] = {
 	{"PRI_MI2S_RX Audio Mixer", "MultiMedia15", "MM_DL15"},
 	{"PRI_MI2S_RX Audio Mixer", "MultiMedia16", "MM_DL16"},
 	{"PRI_MI2S_RX Audio Mixer", "MultiMedia26", "MM_DL26"},
+#ifdef CONFIG_BOARD_NUBIA
+	{"PRI_MI2S_RX Audio Mixer", "MultiMedia31", "MM_DL31"},
+	{"PRI_MI2S_RX Audio Mixer", "MultiMedia32", "MM_DL32"},
+#endif
 	{"PRI_MI2S_RX", NULL, "PRI_MI2S_RX Audio Mixer"},
 	{"PRI_MI2S_RX Audio Mixer", "DTMF", "DTMF_DL_HL"},
 
+#ifdef CONFIG_BOARD_NUBIA
+	{"RX_CDC_DMA_RX_0 Audio Mixer", "MultiMedia1", "MM_DL1"},
+	{"RX_CDC_DMA_RX_0 Audio Mixer", "MultiMedia2", "MM_DL2"},
+	{"RX_CDC_DMA_RX_0 Audio Mixer", "MultiMedia3", "MM_DL3"},
+	{"RX_CDC_DMA_RX_0 Audio Mixer", "MultiMedia4", "MM_DL4"},
+	{"RX_CDC_DMA_RX_0 Audio Mixer", "MultiMedia5", "MM_DL5"},
+	{"RX_CDC_DMA_RX_0 Audio Mixer", "MultiMedia6", "MM_DL6"},
+	{"RX_CDC_DMA_RX_0 Audio Mixer", "MultiMedia7", "MM_DL7"},
+	{"RX_CDC_DMA_RX_0 Audio Mixer", "MultiMedia8", "MM_DL8"},
+	{"RX_CDC_DMA_RX_0 Audio Mixer", "MultiMedia9", "MM_DL9"},
+	{"RX_CDC_DMA_RX_0 Audio Mixer", "MultiMedia10", "MM_DL10"},
+	{"RX_CDC_DMA_RX_0 Audio Mixer", "MultiMedia11", "MM_DL11"},
+	{"RX_CDC_DMA_RX_0 Audio Mixer", "MultiMedia12", "MM_DL12"},
+	{"RX_CDC_DMA_RX_0 Audio Mixer", "MultiMedia13", "MM_DL13"},
+	{"RX_CDC_DMA_RX_0 Audio Mixer", "MultiMedia14", "MM_DL14"},
+	{"RX_CDC_DMA_RX_0 Audio Mixer", "MultiMedia15", "MM_DL15"},
+	{"RX_CDC_DMA_RX_0 Audio Mixer", "MultiMedia16", "MM_DL16"},
+	{"RX_CDC_DMA_RX_0 Audio Mixer", "MultiMedia26", "MM_DL26"},
+	{"RX_CDC_DMA_RX_0 Audio Mixer", "MultiMedia31", "MM_DL31"},
+	{"RX_CDC_DMA_RX_0 Audio Mixer", "MultiMedia32", "MM_DL32"},
+	{"RX_CDC_DMA_RX_0", NULL, "RX_CDC_DMA_RX_0 Audio Mixer"},
+#endif
 	{"INT0_MI2S_RX Audio Mixer", "MultiMedia1", "MM_DL1"},
 	{"INT0_MI2S_RX Audio Mixer", "MultiMedia2", "MM_DL2"},
 	{"INT0_MI2S_RX Audio Mixer", "MultiMedia3", "MM_DL3"},
@@ -41147,6 +41218,10 @@ static const struct snd_soc_dapm_route intercon_mi2s[] = {
 	{"MI2S_RX", NULL, "MI2S_RX Port Mixer"},
 
 	{"PRI_MI2S_RX Port Mixer", "PRI_MI2S_TX", "PRI_MI2S_TX"},
+#ifdef CONFIG_BOARD_NUBIA
+	{"PRI_MI2S_RX Port Mixer", "TX_CDC_DMA_TX_4", "TX_CDC_DMA_TX_4"},
+	{"PRI_MI2S_RX Port Mixer", "TX_CDC_DMA_TX_3", "TX_CDC_DMA_TX_3"},
+#endif
 	{"PRI_MI2S_RX Port Mixer", "SEC_MI2S_TX", "SEC_MI2S_TX"},
 	{"PRI_MI2S_RX Port Mixer", "QUAT_MI2S_TX", "QUAT_MI2S_TX"},
 	{"PRI_MI2S_RX Port Mixer", "TERT_MI2S_TX", "TERT_MI2S_TX"},

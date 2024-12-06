@@ -2,6 +2,9 @@
 /*
  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
  */
+#ifdef CONFIG_BOARD_NUBIA
+#define DEBUG
+#endif
 #include <linux/module.h>
 #include <linux/init.h>
 #include <linux/platform_device.h>
@@ -1063,6 +1066,9 @@ int wcd938x_mbhc_init(struct wcd938x_mbhc **mbhc,
 	int ret = 0;
 	struct wcd938x_pdata *pdata;
 
+#ifdef CONFIG_BOARD_NUBIA
+	pr_err("%s: into\n", __func__);
+#endif
 	if (!component) {
 		pr_err("%s: component is NULL\n", __func__);
 		return -EINVAL;

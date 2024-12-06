@@ -2,6 +2,9 @@
 /*
  * Copyright (c) 2015-2020, The Linux Foundation. All rights reserved.
  */
+#ifdef CONFIG_BOARD_NUBIA
+#define DEBUG
+#endif
 #include <linux/module.h>
 #include <linux/init.h>
 #include <linux/firmware.h>
