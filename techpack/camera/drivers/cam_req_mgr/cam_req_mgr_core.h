@@ -15,7 +15,11 @@
 
 #define CAM_REQ_MGR_WATCHDOG_TIMEOUT          1000
 #define CAM_REQ_MGR_WATCHDOG_TIMEOUT_DEFAULT  5000
+#ifdef CONFIG_BOARD_NUBIA
+#define CAM_REQ_MGR_WATCHDOG_TIMEOUT_MAX      300000 // ztemt kangxiong add for longtime snapshot
+#else
 #define CAM_REQ_MGR_WATCHDOG_TIMEOUT_MAX      50000
+#endif
 #define CAM_REQ_MGR_SCHED_REQ_TIMEOUT         1000
 #define CAM_REQ_MGR_SIMULATE_SCHED_REQ        30
 

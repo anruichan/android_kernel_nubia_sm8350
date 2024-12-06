@@ -172,6 +172,10 @@ camera-$(CONFIG_SPECTRA_SENSOR) += \
 	cam_sensor_module/cam_sensor_utils/cam_sensor_util.o \
 	cam_sensor_module/cam_res_mgr/cam_res_mgr.o
 
+camera-$(CONFIG_SPECTRA_SENSOR) += \
+	cam_sensor_module/LC898124/OisInter.o \
+	cam_sensor_module/cam_nubia/cam_nubia_dev.o
+
 camera-$(CONFIG_LEDS_QPNP_FLASH_V2) += \
 	cam_sensor_module/cam_flash/cam_flash_dev.o \
 	cam_sensor_module/cam_flash/cam_flash_core.o \
