@@ -250,4 +250,9 @@ int32_t cam_flash_init_module(void);
  * @brief : API to remove FLASH Hw from platform framework.
  */
 void cam_flash_exit_module(void);
+#ifdef CONFIG_BOARD_NUBIA
+/* ZTEMT: fengxun add for flash debug--------Start */
+int cam_flash_switch(struct cam_flash_ctrl *flash_ctrl, int enable);
+/* ZTEMT: fengxun add for flash debug--------End */
+#endif
 #endif /*_CAM_FLASH_DEV_H_*/
