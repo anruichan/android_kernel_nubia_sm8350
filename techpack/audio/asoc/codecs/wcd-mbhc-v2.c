@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0-only
 /* Copyright (c) 2015-2021, The Linux Foundation. All rights reserved.
  */
+#ifdef CONFIG_BOARD_NUBIA
+#define DEBUG
+#endif
 #include <linux/module.h>
 #include <linux/init.h>
 #include <linux/slab.h>
@@ -129,13 +132,20 @@ void wcd_enable_curr_micbias(const struct wcd_mbhc *mbhc,
 	pr_debug("%s: enter, cs_mb_en: %d\n", __func__, cs_mb_en);
 
 	switch (cs_mb_en) {
+#ifdef CONFIG_BOARD_NUBIA
+	case WCD_MBHC_EN_CS:
+#else
 	case WCD_MBHC_EN_CS:
 		WCD_MBHC_REG_UPDATE_BITS(WCD_MBHC_MICB_CTRL, 0);
 		WCD_MBHC_REG_UPDATE_BITS(WCD_MBHC_BTN_ISRC_CTL, 3);
 		/* Program Button threshold registers as per CS */
 		wcd_program_btn_threshold(mbhc, false);
 		break;
+#endif
 	case WCD_MBHC_EN_MB:
+#ifdef CONFIG_BOARD_NUBIA
+	case WCD_MBHC_EN_PULLUP:
+#endif
 		WCD_MBHC_REG_UPDATE_BITS(WCD_MBHC_BTN_ISRC_CTL, 0);
 		WCD_MBHC_REG_UPDATE_BITS(WCD_MBHC_FSM_EN, 1);
 
@@ -144,6 +154,7 @@ void wcd_enable_curr_micbias(const struct wcd_mbhc *mbhc,
 		/* Program Button threshold registers as per MICBIAS */
 		wcd_program_btn_threshold(mbhc, true);
 		break;
+#ifndef CONFIG_BOARD_NUBIA
 	case WCD_MBHC_EN_PULLUP:
 		WCD_MBHC_REG_UPDATE_BITS(WCD_MBHC_BTN_ISRC_CTL, 3);
 		WCD_MBHC_REG_UPDATE_BITS(WCD_MBHC_FSM_EN, 1);
@@ -151,6 +162,7 @@ void wcd_enable_curr_micbias(const struct wcd_mbhc *mbhc,
 		/* Program Button threshold registers as per MICBIAS */
 		wcd_program_btn_threshold(mbhc, true);
 		break;
+#endif
 	case WCD_MBHC_EN_NONE:
 		WCD_MBHC_REG_UPDATE_BITS(WCD_MBHC_BTN_ISRC_CTL, 0);
 		WCD_MBHC_REG_UPDATE_BITS(WCD_MBHC_FSM_EN, 1);
