@@ -927,6 +927,9 @@ static int _get_tearcheck_threshold(struct sde_encoder_phys *phys_enc)
 			phys_enc->parent_ops.get_qsync_fps(
 				phys_enc->parent, &qsync_min_fps, 0);
 
+#ifdef CONFIG_BOARD_NUBIA
+		qsync_min_fps = default_fps - 5;
+#endif
 		if (!qsync_min_fps || !default_fps || !yres) {
 			SDE_ERROR_CMDENC(cmd_enc,
 				"wrong qsync params %d %d %d\n",
@@ -949,16 +952,24 @@ static int _get_tearcheck_threshold(struct sde_encoder_phys *phys_enc)
 
 		threshold_lines = extra_time_ns / default_line_time_ns;
 
+
 		/* round down to nearest multiple of 4 to compensate for rounding in DDIC */
 		threshold_lines &= ~(4 - 1);
 		/* additional compensation for latency */
 		if (threshold_lines - 2 > DEFAULT_TEARCHECK_SYNC_THRESH_START)
 			threshold_lines -= 2;
 
+#ifdef CONFIG_BOARD_NUBIA
+		SDE_DEBUG_CMDENC(cmd_enc, "zxb slow:%d default:%d extra:%d(ns)\n",
+			slow_time_ns, default_time_ns, extra_time_ns);
+		SDE_DEBUG_CMDENC(cmd_enc, "zxb min_fps:%d fps:%d yres:%d lines:%d\n",
+			qsync_min_fps, default_fps, yres, threshold_lines);
+#else
 		SDE_DEBUG_CMDENC(cmd_enc, "slow:%d default:%d extra:%d(ns)\n",
 			slow_time_ns, default_time_ns, extra_time_ns);
 		SDE_DEBUG_CMDENC(cmd_enc, "min_fps:%d fps:%d yres:%d lines:%d\n",
 			qsync_min_fps, default_fps, yres, threshold_lines);
+#endif
 
 		SDE_EVT32(qsync_mode, qsync_min_fps, extra_time_ns, default_fps,
 			yres, threshold_lines);
