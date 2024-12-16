@@ -19,7 +19,11 @@
 #include "raid0.h"
 #include "raid5.h"
 
+#ifdef CONFIG_BOARD_NUBIA
+static int default_layout = RAID0_ALT_MULTIZONE_LAYOUT; // +linx
+#else
 static int default_layout = 0;
+#endif
 module_param(default_layout, int, 0644);
 
 #define UNSUPPORTED_MDDEV_FLAGS		\
