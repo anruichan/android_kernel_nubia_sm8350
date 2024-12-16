@@ -108,6 +108,11 @@
 #include <soc/qcom/boot_stats.h>
 #endif
 
+#ifdef CONFIG_BOARD_NUBIA
+// Nubia FileObserver Begin
+#include <../fs/fsobserver.h>
+// Nubia FileObserver End
+#endif
 static int kernel_init(void *);
 
 extern void init_IRQ(void);
@@ -1140,6 +1145,14 @@ static int __ref kernel_init(void *unused)
 	place_marker("M - DRIVER Kernel Boot Done");
 #endif
 
+#ifdef ENABLE_FILE_OBSERVER
+	// Nubia FileObserver Begin
+	fsobserver_init();
+	// Nubia FileObserver End
+#endif
+#ifdef CONFIG_BOARD_NUBIA
+	printk(KERN_WARNING "[fsobserver] kernel_init3\n");
+#endif
 	if (ramdisk_execute_command) {
 		ret = run_init_process(ramdisk_execute_command);
 		if (!ret)
