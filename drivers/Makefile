@@ -188,3 +188,4 @@ obj-$(CONFIG_INTERCONNECT)	+= interconnect/
 obj-$(CONFIG_COUNTER)		+= counter/
 obj-$(CONFIG_NUBIA_ESE)		+= ese/
 obj-$(CONFIG_NUBIA_FAN)		+= fan/
+obj-$(CONFIG_NUBIA_DRIVERS)	+= nubia/
