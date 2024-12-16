@@ -471,9 +471,15 @@ int extcon_sync(struct extcon_dev *edev, unsigned int id)
 	envp[env_offset] = NULL;
 
 	/* Unlock early before uevent */
+#ifdef CONFIG_BOARD_NUBIA
+	printk("%s,%d dp_audio_debug env[name] = %s, env[state] = %s\n", __func__, __LINE__, envp[0], envp[1]);
+#endif
 	spin_unlock_irqrestore(&edev->lock, flags);
 	kobject_uevent_env(&edev->dev.kobj, KOBJ_CHANGE, envp);
 	free_page((unsigned long)prop_buf);
+#ifdef CONFIG_BOARD_NUBIA
+	printk("%s,%d dp_audio_debug \n", __func__, __LINE__);
+#endif
 
 	return 0;
 }
@@ -594,6 +600,9 @@ int extcon_set_state_sync(struct extcon_dev *edev, unsigned int id, bool state)
 	if (ret < 0)
 		return ret;
 
+#ifdef CONFIG_BOARD_NUBIA
+	printk("%s,%d dp_audio_debug \n", __func__, __LINE__);
+#endif
 	return extcon_sync(edev, id);
 }
 EXPORT_SYMBOL_GPL(extcon_set_state_sync);
