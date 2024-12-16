@@ -306,7 +306,11 @@ static int t_show(struct seq_file *m, void *v)
 	if (!*fmt)
 		return 0;
 
+#ifdef CONFIG_BOARD_NUBIA
+	seq_printf(m, "0x%lx : \"", 0L);
+#else
 	seq_printf(m, "0x%lx : \"", *(unsigned long *)fmt);
+#endif
 
 	/*
 	 * Tabs and new lines need to be converted.
