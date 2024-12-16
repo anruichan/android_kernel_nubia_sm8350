@@ -234,4 +234,6 @@ source "drivers/ese/Kconfig"
 
 source "drivers/fan/Kconfig"
 
+source "drivers/nubia/Kconfig"
+
 endmenu
