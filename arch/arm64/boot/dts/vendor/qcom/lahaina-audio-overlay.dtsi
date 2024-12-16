@@ -85,6 +85,9 @@
 			};
 
 			swr_dmic_04: dmic_swr@58350223 {
+#ifdef CONFIG_BOARD_NUBIA_LAHAINA
+				status = "disabled";
+#endif
 				compatible = "qcom,swr-dmic";
 				reg = <0x08 0x58350223>;
 				qcom,swr-dmic-prefix = "SWR_MIC3";
@@ -94,6 +97,9 @@
 			};
 
 			swr_dmic_03: dmic_swr@58350222 {
+#ifdef CONFIG_BOARD_NUBIA_LAHAINA
+				status = "disabled";
+#endif
 				compatible = "qcom,swr-dmic";
 				reg = <0x08 0x58350222>;
 				qcom,swr-dmic-prefix = "SWR_MIC2";
@@ -103,6 +109,9 @@
 			};
 
 			swr_dmic_02: dmic_swr@58350221 {
+#ifdef CONFIG_BOARD_NUBIA_LAHAINA
+				status = "disabled";
+#endif
 				compatible = "qcom,swr-dmic";
 				reg = <0x08 0x58350221>;
 				qcom,swr-dmic-prefix = "SWR_MIC1";
@@ -112,6 +121,9 @@
 			};
 
 			swr_dmic_01: dmic_swr@58350220 {
+#ifdef CONFIG_BOARD_NUBIA_LAHAINA
+				status = "disabled";
+#endif
 				compatible = "qcom,swr-dmic";
 				reg = <0x08 0x58350220>;
 				qcom,swr-dmic-prefix = "SWR_MIC0";
@@ -155,6 +167,9 @@
 			qcom,swr-num-dev = <2>;
 			qcom,swr-clock-stop-mode0 = <1>;
 			swr_haptics: swr_haptics@f0170220 {
+#ifdef CONFIG_BOARD_NUBIA_LAHAINA
+				status = "disabled";
+#endif
 				compatible = "qcom,pm8350b-swr-haptics";
 				reg = <0x01 0xf0170220>;
 				swr-slave-supply = <&hap_swr_slave_reg>;
@@ -200,6 +215,9 @@
 			qcom,swr-num-dev = <2>;
 			qcom,dynamic-port-map-supported = <0>;
 			wsa883x_0221: wsa883x@02170221 {
+#ifdef CONFIG_BOARD_NUBIA_LAHAINA
+				status = "disabled";
+#endif
 				compatible = "qcom,wsa883x";
 				reg = <0x2 0x2170221>;
 				qcom,spkr-sd-n-node = <&wsa_spkr_en1>;
@@ -213,6 +231,9 @@
 			};
 
 			wsa883x_0222: wsa883x@02170222 {
+#ifdef CONFIG_BOARD_NUBIA_LAHAINA
+				status = "disabled";
+#endif
 				compatible = "qcom,wsa883x";
 				reg = <0x2 0x2170222>;
 				qcom,spkr-sd-n-node = <&wsa_spkr_en2>;
@@ -270,10 +291,17 @@
 		qcom,cdc-vdd-mic-bias-voltage = <3296000 3296000>;
 		qcom,cdc-vdd-mic-bias-current = <30000>;
 
+#ifdef CONFIG_BOARD_NUBIA_LAHAINA
+		qcom,cdc-micbias1-mv = <2500>;
+		qcom,cdc-micbias2-mv = <2700>;
+		qcom,cdc-micbias3-mv = <2500>;
+		qcom,cdc-micbias4-mv = <2500>;
+#else
 		qcom,cdc-micbias1-mv = <1800>;
 		qcom,cdc-micbias2-mv = <1800>;
 		qcom,cdc-micbias3-mv = <1800>;
 		qcom,cdc-micbias4-mv = <1800>;
+#endif
 
 		qcom,cdc-static-supplies = "cdc-vdd-rxtx",
 					   "cdc-vddio",
@@ -298,7 +326,11 @@
 		"AMIC3", "Analog Mic3",
 		"Analog Mic3", "MIC BIAS3",
 		"AMIC4", "Analog Mic4",
+#ifdef CONFIG_BOARD_NUBIA_LAHAINA
+		"Analog Mic4", "MIC BIAS4",
+#else
 		"Analog Mic4", "MIC BIAS3",
+#endif
 		"AMIC5", "Analog Mic5",
 		"Analog Mic5", "MIC BIAS4",
 		"TX DMIC0", "Digital Mic0",
@@ -316,8 +348,11 @@
 		"IN1_HPHL", "HPHL_OUT",
 		"IN2_HPHR", "HPHR_OUT",
 		"IN3_AUX", "AUX_OUT",
+#ifndef CONFIG_BOARD_NUBIA_LAHAINA
 		"HAP_IN", "PCM_OUT",
+#endif
 		"WSA SRC0_INP", "SRC0",
+#ifndef CONFIG_BOARD_NUBIA_LAHAINA
 		"TX SWR_INPUT", "SWR_MIC0 SWR_DMIC_OUTPUT",
 		"TX SWR_INPUT", "SWR_MIC1 SWR_DMIC_OUTPUT",
 		"TX SWR_INPUT", "SWR_MIC2 SWR_DMIC_OUTPUT",
@@ -330,14 +365,17 @@
 		"VA SWR_INPUT", "SWR_MIC1 SWR_DMIC_OUTPUT",
 		"VA SWR_INPUT", "SWR_MIC2 SWR_DMIC_OUTPUT",
 		"VA SWR_INPUT", "SWR_MIC3 SWR_DMIC_OUTPUT",
+#endif
 		"WSA_TX DEC0_INP", "TX DEC0 MUX",
 		"WSA_TX DEC1_INP", "TX DEC1 MUX",
 		"RX_TX DEC0_INP", "TX DEC0 MUX",
 		"RX_TX DEC1_INP", "TX DEC1 MUX",
 		"RX_TX DEC2_INP", "TX DEC2 MUX",
 		"RX_TX DEC3_INP", "TX DEC3 MUX",
+#ifndef CONFIG_BOARD_NUBIA_LAHAINA
 		"SpkrLeft IN", "WSA_SPK1 OUT",
 		"SpkrRight IN", "WSA_SPK2 OUT",
+#endif
 		"TX SWR_INPUT", "WCD_TX_OUTPUT",
 		"VA SWR_INPUT", "VA_SWR_CLK",
 		"VA SWR_INPUT", "WCD_TX_OUTPUT",
@@ -357,23 +395,42 @@
 		"VA DMIC4", "VA MIC BIAS4",
 		"VA DMIC5", "VA MIC BIAS4";
 	qcom,msm-mbhc-hphl-swh = <1>;
+#ifdef CONFIG_BOARD_NUBIA_LAHAINA
+	qcom,msm-mbhc-gnd-swh = <0>;
+	#qcom,cdc-dmic01-gpios = <&cdc_dmic01_gpios>;
+	#qcom,cdc-dmic23-gpios = <&cdc_dmic23_gpios>;
+	#qcom,cdc-dmic45-gpios = <&cdc_dmic45_gpios>;
+#else
 	qcom,msm-mbhc-gnd-swh = <1>;
 	qcom,cdc-dmic01-gpios = <&cdc_dmic01_gpios>;
 	qcom,cdc-dmic23-gpios = <&cdc_dmic23_gpios>;
 	qcom,cdc-dmic45-gpios = <&cdc_dmic45_gpios>;
+#endif
 	asoc-codec  = <&stub_codec>, <&bolero>,
+#ifdef CONFIG_BOARD_NUBIA_LAHAINA
+		      <&wcd938x_codec>,
+#else
 		      <&wcd938x_codec>, <&swr_haptics>,
 		      <&wsa883x_0221>, <&wsa883x_0222>,
 		      <&swr_dmic_04>, <&swr_dmic_03>,
 		      <&swr_dmic_02>, <&swr_dmic_01>,
+#endif
 		      <&ext_disp_audio_codec>;
 	asoc-codec-names = "msm-stub-codec.1", "bolero_codec",
+#ifdef CONFIG_BOARD_NUBIA_LAHAINA
+			   "wcd938x_codec",
+#else
 			   "wcd938x_codec", "swr-haptics",
 			   "wsa-codec1", "wsa-codec2",
 			   "swr-dmic.04", "swr-dmic.03",
 			   "swr-dmic.02", "swr-dmic.01",
+#endif
 			   "msm-ext-disp-audio-codec-rx";
+#ifdef CONFIG_BOARD_NUBIA_LAHAINA
+	qcom,wsa-max-devs = <0>;
+#else
 	qcom,wsa-max-devs = <2>;
+#endif
 	qcom,cps_reg_phy_addr = <0x3250300 0x3250304 0x3250318>;
 	qcom,cps_wsa_vbatt_temp_reg_addr = <0x0003429 0x0003422>;
 	qcom,cps_threshold_levels = <148 168>;
@@ -458,15 +515,19 @@
 	wsa_spkr_en1: wsa_spkr_en1_pinctrl {
 		compatible = "qcom,msm-cdc-pinctrl";
 		pinctrl-names = "aud_active", "aud_sleep";
+#ifndef CONFIG_BOARD_NUBIA_LAHAINA
 		pinctrl-0 = <&spkr_1_sd_n_active>;
 		pinctrl-1 = <&spkr_1_sd_n_sleep>;
+#endif
 	};
 
 	wsa_spkr_en2: wsa_spkr_en2_pinctrl {
 		compatible = "qcom,msm-cdc-pinctrl";
 		pinctrl-names = "aud_active", "aud_sleep";
+#ifndef CONFIG_BOARD_NUBIA_LAHAINA
 		pinctrl-0 = <&spkr_2_sd_n_active>;
 		pinctrl-1 = <&spkr_2_sd_n_sleep>;
+#endif
 	};
 
 	wcd938x_rst_gpio: msm_cdc_pinctrl@32 {

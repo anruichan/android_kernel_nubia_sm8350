@@ -1,3 +1,114 @@
+#ifdef CONFIG_BOARD_NUBIA_LAHAINA
+&tlmm {
+	goodix_pwr_avdd {
+		goodix_pwr_avdd_active: goodix_pwr_avdd_active {
+			mux {
+				pins = "gpio132";
+				function = "gpio";
+			};
+			config {
+				pins = "gpio132";
+				drive-strength = <6>;
+				bias-pull-up;
+			};
+		};
+
+		goodix_pwr_avdd_sleep: goodix_pwr_avdd_sleep {
+			mux {
+				pins = "gpio132";
+				function = "gpio";
+			};
+			config {
+				pins = "gpio132";
+				drive-strength = <6>;
+				bias-pull-up;
+			};
+		};
+	};
+
+	goodix_reset {
+		goodix_reset_active: goodix_reset_active {
+			mux {
+				pins = "gpio39";
+				function = "gpio";
+			};
+			config {
+				pins = "gpio39";
+				drive-strength = <6>;
+				bias-pull-up;
+			};
+		};
+
+		goodix_reset_sleep: goodix_reset_sleep {
+			mux {
+				pins = "gpio39";
+				function = "gpio";
+			};
+			config {
+				pins = "gpio39";
+				drive-strength = <6>;
+				bias-pull-up;
+			};
+		};
+	};
+
+	goodix_irq {
+		goodix_irq_active: goodix_irq_active {
+			mux {
+				pins = "gpio38";
+				function = "gpio";
+			};
+			config {
+				pins = "gpio38";
+				drive-strength = <6>;
+				bias-pull-down;
+				input-enable;
+			};
+		};
+
+		goodix_irq_sleep: goodix_irq_sleep {
+			mux {
+				pins = "gpio38";
+				function = "gpio";
+			};
+			config {
+				pins = "gpio38";
+				drive-strength = <6>;
+				bias-pull-down;
+				input-enable;
+			};
+		};
+	};
+
+	goodix_id {
+		goodix_id_active: goodix_id_active {
+			mux {
+				pins = "gpio85";
+				function = "gpio";
+			};
+			config {
+				pins = "gpio85";
+				drive-strength = <6>;
+				bias-pull-down;
+				input-enable;
+			};
+		};
+
+		goodix_id_sleep: goodix_id_sleep {
+			mux {
+				pins = "gpio85";
+				function = "gpio";
+			};
+			config {
+				pins = "gpio85";
+				drive-strength = <6>;
+				bias-pull-down;
+				input-enable;
+			};
+		};
+	};
+};
+#endif
 &tlmm {
 	bt_en_sleep: bt_en_sleep {
 		mux {
@@ -1814,12 +1925,16 @@
 
 		sec_aux_pcm_ws_sleep: sec_aux_pcm_ws_sleep {
 			mux {
+#ifndef CONFIG_BOARD_NUBIA_LAHAINA
 				pins = "gpio132";
+#endif /* deleted by nubia */
 				function = "gpio";
 			};
 
 			config {
+#ifndef CONFIG_BOARD_NUBIA_LAHAINA
 				pins = "gpio132";
+#endif /* deleted by nubia */
 				drive-strength = <2>;   /* 2 mA */
 				bias-pull-down;         /* PULL DOWN */
 				input-enable;
@@ -1828,12 +1943,16 @@
 
 		sec_aux_pcm_ws_active: sec_aux_pcm_ws_active {
 			mux {
+#ifndef CONFIG_BOARD_NUBIA_LAHAINA
 				pins = "gpio132";
+#endif /* deleted by nubia */
 				function = "mi2s1_ws";
 			};
 
 			config {
+#ifndef CONFIG_BOARD_NUBIA_LAHAINA
 				pins = "gpio132";
+#endif /* deleted by nubia */
 				drive-strength = <8>;   /* 8 mA */
 				bias-disable;           /* NO PULL */
 			};
@@ -2162,12 +2281,16 @@
 
 		sec_tdm_ws_sleep: sec_tdm_ws_sleep {
 			mux {
+#ifndef CONFIG_BOARD_NUBIA_LAHAINA
 				pins = "gpio132";
+#endif /* deleted by nubia */
 				function = "gpio";
 			};
 
 			config {
+#ifndef CONFIG_BOARD_NUBIA_LAHAINA
 				pins = "gpio132";
+#endif /* deleted by nubia */
 				drive-strength = <2>;   /* 2 mA */
 				bias-pull-down;         /* PULL DOWN */
 				input-enable;
@@ -2176,12 +2299,16 @@
 
 		sec_tdm_ws_active: sec_tdm_ws_active {
 			mux {
+#ifndef CONFIG_BOARD_NUBIA_LAHAINA
 				pins = "gpio132";
+#endif /* deleted by nubia */
 				function = "mi2s1_ws";
 			};
 
 			config {
+#ifndef CONFIG_BOARD_NUBIA_LAHAINA
 				pins = "gpio132";
+#endif /* deleted by nubia */
 				drive-strength = <8>;   /* 8 mA */
 				bias-disable;           /* NO PULL */
 			};
@@ -2574,12 +2701,16 @@
 	sec_mi2s_ws {
 		sec_mi2s_ws_sleep: sec_mi2s_ws_sleep {
 			mux {
+#ifndef CONFIG_BOARD_NUBIA_LAHAINA
 				pins = "gpio132";
+#endif /* deleted by nubia */
 				function = "gpio";
 			};
 
 			config {
+#ifndef CONFIG_BOARD_NUBIA_LAHAINA
 				pins = "gpio132";
+#endif /* deleted by nubia */
 				drive-strength = <2>;   /* 2 mA */
 				bias-pull-down;         /* PULL DOWN */
 				input-enable;
@@ -2588,12 +2719,16 @@
 
 		sec_mi2s_ws_active: sec_mi2s_ws_active {
 			mux {
+#ifndef CONFIG_BOARD_NUBIA_LAHAINA
 				pins = "gpio132";
+#endif /* deleted by nubia */
 				function = "mi2s1_ws";
 			};
 
 			config {
+#ifndef CONFIG_BOARD_NUBIA_LAHAINA
 				pins = "gpio132";
+#endif /* deleted by nubia */
 				drive-strength = <8>;   /* 8 mA */
 				bias-disable;           /* NO PULL */
 			};

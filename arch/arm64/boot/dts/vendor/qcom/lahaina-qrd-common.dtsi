@@ -330,7 +330,11 @@
 };
 
 &pm8350c_switch0 {
+#ifdef CONFIG_BOARD_NUBIA_LAHAINA
+	qcom,led-mask = <1>; /* Channels 1 & 4 */
+#else
 	qcom,led-mask = <9>; /* Channels 1 & 4 */
+#endif
 	qcom,symmetry-en;
 };
 

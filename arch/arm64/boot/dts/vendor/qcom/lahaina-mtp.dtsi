@@ -14,6 +14,24 @@
 	status = "ok";
 };
 
+#ifdef CONFIG_BOARD_NUBIA_LAHAINA
+&soc {
+	ec_color_gpio {
+		compatible = "nubia,ec_color";
+		qcom,ec_color_enable_gpio = <&tlmm 35 0x00>;
+		qcom,ec_color_sel_gpio = <&pm8350c_gpios 7 GPIO_ACTIVE_LOW>;
+	};
+};
+
+// +linx
+&soc {
+	ps5013_gpio {
+		compatible = "nubia,ps5013";
+		qcom,ps5013_power_enable_gpio = <&pm8350b_gpios 1 GPIO_ACTIVE_HIGH>;
+	};
+};
+// -linx
+#endif
 &soc {
 	gpio_keys {
 		compatible = "gpio-keys";
@@ -34,9 +52,11 @@
 	};
 
 	qcom,qbt_handler {
+#ifndef CONFIG_BOARD_NUBIA_LAHAINA
 		compatible = "qcom,qbt-handler";
 		qcom,ipc-gpio = <&tlmm 38 0>;
 		qcom,finger-detect-gpio = <&tlmm 39 0>;
+#endif /* deleted by nubia */
 	};
 
 	extcon_usb1: extcon_usb1 {
@@ -51,6 +71,22 @@
 			     &usb2_vbus_boost_default>;
 	};
 };
+#ifdef CONFIG_BOARD_NUBIA_LAHAINA
+&soc {
+	goodix_fp {
+		compatible = "goodix,fingerprint";
+		interrupt-parent = <&tlmm>;
+		pinctrl-names = "gf_fp_active", "gf_fp_suspend";
+		pinctrl-0 = <&goodix_pwr_avdd_active &goodix_reset_active &goodix_irq_active &goodix_id_active>;
+		pinctrl-1 = <&goodix_pwr_avdd_sleep &goodix_reset_sleep &goodix_irq_sleep &goodix_id_sleep>;
+		goodix,goodix_reset = <&tlmm 39 0x00>;
+		goodix,goodix_irq = <&tlmm 38 0x00>;
+		goodix,goodix_id = <&tlmm 85 0x00>;
+		goodix,goodix_pwr_avdd = <&tlmm 132 0x00>;
+		status = "ok";
+	};
+};
+#endif
 
 &qupv3_se4_i2c {
 	#address-cells = <1>;
@@ -129,7 +165,11 @@
 
 	cd-gpios = <&tlmm 92 GPIO_ACTIVE_LOW>;
 
+#ifdef CONFIG_BOARD_NUBIA_LAHAINA
+	status = "disabled";
+#else
 	status = "ok";
+#endif
 };
 
 
@@ -178,7 +218,11 @@
 };
 
 &pm8350c_switch0 {
+#ifdef CONFIG_BOARD_NUBIA_LAHAINA
+	qcom,led-mask = <1>; /* Channels 1 & 4 */
+#else
 	qcom,led-mask = <9>; /* Channels 1 & 4 */
+#endif
 	qcom,symmetry-en;
 };
 
@@ -196,6 +240,17 @@
 	status = "ok";
 };
 
+#ifdef CONFIG_BOARD_NUBIA_LAHAINA
+&dai_mi2s0 {
+	qcom,msm-mi2s-rx-lines = <1>;
+	qcom,msm-mi2s-tx-lines = <2>;
+	pinctrl-names = "default", "sleep";
+	pinctrl-0 = <&pri_mi2s_sck_active &pri_mi2s_ws_active
+			&pri_mi2s_sd0_active &pri_mi2s_sd1_active>;
+	pinctrl-1 = <&pri_mi2s_sck_sleep &pri_mi2s_ws_sleep
+			&pri_mi2s_sd0_sleep &pri_mi2s_sd1_sleep>;
+};
+#else
 &q6core {
 	cdc_tert_mi2s_gpios: msm_cdc_pinctrl_tert {
 		compatible = "qcom,msm-cdc-pinctrl";
@@ -211,6 +266,7 @@
 &lahaina_snd {
 	qcom,tert-mi2s-gpios = <&cdc_tert_mi2s_gpios>;
 };
+#endif
 
 &usb1 {
 	extcon = <&extcon_usb1>;
@@ -224,6 +280,52 @@
 &wil6210 {
 	status = "ok";
 };
+#ifdef CONFIG_BOARD_NUBIA_LAHAINA
+/* add for haptic */
+&qupv3_se17_i2c {
+	status = "ok";
+	aw8695_haptic@5a {
+		compatible = "awinic,aw8695_haptic";
+		reg = <0x5a>;
+		reset-gpio = <&tlmm 3 0>;
+		irq-gpio = <&tlmm 2 0>;
+		vib_mode = < 0 >; /* mode: RAM mode->0; CONT mode -> 1 */
+		vib_f0_pre = < 2000 >;
+		vib_f0_cali_percen = < 7 >;
+		vib_cont_drv_lev = < 118 >;
+		vib_cont_drv_lvl_ov = < 138 >;
+		vib_cont_td = < 0x009A >;
+		vib_cont_zc_thr = < 0x0ff1 >; /* hq 0x08F8 */
+		vib_cont_num_brk = < 3 >;
+		vib_f0_coeff = < 260 >; /* Don't modify it 2.604167 */
+		vib_f0_trace_parameter = < 0x05 0x03 0x02 0x0f >;
+		vib_bemf_config = < 0x10 0x08 0x03 0xf8 >;
+		vib_sw_brake = < 0x2c >;
+		vib_tset = < 0x12 >;
+		vib_r_spare = < 0x68 >;
+		vib_bstdbg = < 0x30 0xeb 0xd4 0 0 0 >;
+		status = "okay";
+	};
+
+	spkamp@3a { /* max98927 smartpa device */
+		compatible = "maxim,max98927R";
+		status = "okay";
+		reg = <0x3a>;
+		mono_stereo_mode = <3>;
+		interleave_mode = <1>;
+		maxim,98927-reset-gpio = <&tlmm 8 0>;
+	};
+	
+	spkamp@39 { /* max98927 smartpa device */
+		compatible = "maxim,max98927L";
+		status = "okay";
+		reg = <0x39>;
+		mono_stereo_mode = <3>;
+		interleave_mode = <1>;
+		maxim,98927-reset-gpio = <&tlmm 9 0>;
+	};
+};
+#endif
 
 &qupv3_se15_i2c {
 	status = "ok";
@@ -248,4 +350,6 @@
 	};
 };
 
+#ifndef CONFIG_BOARD_NUBIA_LAHAINA
 #include "camera/lahaina-camera-sensor-mtp.dtsi"
+#endif

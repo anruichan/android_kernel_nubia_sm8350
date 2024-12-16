@@ -26,6 +26,9 @@
 #include "dsi-panel-sim-dualmipi-video.dtsi"
 #include "dsi-panel-sim-dualmipi-dsc375-cmd.dtsi"
 #include "dsi-panel-sim-sec-hd-cmd.dtsi"
+#ifdef CONFIG_BOARD_NUBIA_LAHAINA
+#include "nubia_panel.dtsi"
+#endif
 #include <dt-bindings/clock/mdss-5nm-pll-clk.h>
 #include "dsi-panel-sim-vdc-vid.dtsi"
 #include "dsi-panel-sim-vdc-cmd.dtsi"
@@ -42,7 +45,11 @@
 			qcom,supply-max-voltage = <1800000>;
 			qcom,supply-enable-load = <60700>;
 			qcom,supply-disable-load = <80>;
+#ifdef CONFIG_BOARD_NUBIA_LAHAINA
+			qcom,supply-post-on-sleep = <0>;
+#else
 			qcom,supply-post-on-sleep = <20>;
+#endif
 		};
 
 		qcom,panel-supply-entry@1 {
@@ -71,7 +78,11 @@
 			qcom,supply-max-voltage = <6000000>;
 			qcom,supply-enable-load = <0>;
 			qcom,supply-disable-load = <0>;
+#ifdef CONFIG_BOARD_NUBIA_LAHAINA
+			qcom,supply-post-on-sleep = <0>;
+#else
 			qcom,supply-post-on-sleep = <20>;
+#endif
 		};
 	};
 
@@ -160,12 +171,14 @@
 	qcom,dsi-dyn-clk-list = <534712320 532484352 530256384>;
 	qcom,dsi-dyn-clk-type = "constant-fps-adjust-hfp";
 
+#ifndef CONFIG_BOARD_NUBIA_LAHAINA
 	qcom,mdss-dsi-panel-status-check-mode = "reg_read";
 	qcom,mdss-dsi-panel-status-command = [06 01 00 01 00 00 01 0a];
 	qcom,mdss-dsi-panel-status-command-state = "dsi_lp_mode";
 	qcom,mdss-dsi-panel-status-value = <0x9c>;
 	qcom,mdss-dsi-panel-status-read-length = <1>;
 	qcom,esd-check-enabled;
+#endif
 
 	qcom,dsi-panel-gpio-address = <0x0F100000 0x1000>;
 	qcom,dsi-panel-gpio-pins = <12 24>;

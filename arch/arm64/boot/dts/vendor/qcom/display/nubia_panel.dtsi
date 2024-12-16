@@ -1,0 +1,6 @@
+#include "dsi-panel-nt37701-nubia-dsc-fhd-cmd-cphy.dtsi"
+#include "dsi-panel-nt37701-nubia-dsc-fhd-cmd-cphy-b0.dtsi"
+#include "dsi-panel-nt37800a-nubia-dsc-fhd-cmd-cphy.dtsi"
+#include "dsi-panel-nt37800a-nubia-dsc-fhd-cmd-cphy-b6.dtsi"
+#include "dsi-panel-r6130-nubia-dsc-fhd-cmd-dphy.dtsi"
+#include "dsi_r66451_1080_2340_amoled_cmd.dtsi"

@@ -3183,7 +3183,9 @@
 
 		qcom,cti-gpio-trigout = <0>;
 		pinctrl-names = "cti-trigout-pctrl";
+#ifndef CONFIG_BOARD_NUBIA_LAHAINA
 		pinctrl-0 = <&trigout_a>;
+#endif
 	};
 
 	cti3: cti@6013000 {

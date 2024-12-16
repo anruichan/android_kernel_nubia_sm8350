@@ -95,7 +95,11 @@
 		qcom,auxpcm-audio-intf = <1>;
 		qcom,wcn-bt = <0>;
 		qcom,ext-disp-audio-rx = <0>;
+#ifdef CONFIG_BOARD_NUBIA_LAHAINA
+		qcom,afe-rxtx-lb = <1>;
+#else
 		qcom,afe-rxtx-lb = <0>;
+#endif
 
 		clock-names = "lpass_audio_hw_vote";
 		clocks = <&lpass_audio_hw_vote 0>;
@@ -190,12 +194,20 @@
 				"msm-dai-cdc-dma-dev.45116",
 				"msm-dai-cdc-dma-dev.45118",
 				"msm-dai-q6-dev.24577";
+#ifdef CONFIG_BOARD_NUBIA_LAHAINA
+		#fsa4480-i2c-handle = <&fsa4480>;
+#else
 		fsa4480-i2c-handle = <&fsa4480>;
+#endif
 	};
 };
 
 &qupv3_se13_i2c {
+#ifdef CONFIG_BOARD_NUBIA_LAHAINA
+	status = "disabled";
+#else
 	status = "ok";
+#endif
 	fsa4480: fsa4480@42 {
 		compatible = "qcom,fsa4480-i2c";
 		reg = <0x42>;

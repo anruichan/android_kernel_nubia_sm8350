@@ -5637,7 +5637,11 @@
 					compatible = "qcom,spmi-pmic";
 					reg = <0xd SPMI_USID>;
 					qcom,can-sleep;
+#ifdef CONFIG_BOARD_NUBIA_LAHAINA
+					status = "ok";
+#else
 					status = "disabled";
+#endif
 				};
 			};
 		};
