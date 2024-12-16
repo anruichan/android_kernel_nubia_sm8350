@@ -331,7 +331,11 @@
 
 		trips {
 			socd_trip:socd-trip {
+#ifdef CONFIG_BOARD_NUBIA_LAHAINA
+				temperature = <95>;
+#else
 				temperature = <90>;
+#endif
 				hysteresis = <0>;
 				type = "passive";
 			};
