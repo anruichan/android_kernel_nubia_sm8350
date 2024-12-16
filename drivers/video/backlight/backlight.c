@@ -184,10 +184,18 @@ int backlight_device_set_brightness(struct backlight_device *bd,
 
 	mutex_lock(&bd->ops_lock);
 	if (bd->ops) {
+#ifdef CONFIG_BOARD_NUBIA
+		if ((brightness > bd->props.max_brightness) && (brightness != 4095))
+#else
 		if (brightness > bd->props.max_brightness)
+#endif
 			rc = -EINVAL;
 		else {
+#ifdef CONFIG_BOARD_NUBIA
+			pr_info("[uid:%d, pid:%d]set brightness to %lu\n", current->cred->uid.val, current->tgid, brightness);
+#else
 			pr_debug("set brightness to %lu\n", brightness);
+#endif
 			bd->props.brightness = brightness;
 			rc = backlight_update_status(bd);
 		}
