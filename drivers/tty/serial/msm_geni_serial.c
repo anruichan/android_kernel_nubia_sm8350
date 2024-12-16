@@ -1553,6 +1553,9 @@ static int stop_rx_sequencer(struct uart_port *uport)
 	}
 
 	if (!uart_console(uport)) {
+#ifdef CONFIG_BOARD_NUBIA
+		msm_geni_serial_set_manual_flow(false, port);
+#endif
 		/*
 		 * Wait for the stale timeout to happen if there
 		 * is any data pending in the rx fifo.
@@ -1684,6 +1687,10 @@ static int stop_rx_sequencer(struct uart_port *uport)
 	port->s_cmd = false;
 
 exit_rx_seq:
+#ifdef CONFIG_BOARD_NUBIA
+	if (!uart_console(uport))
+		msm_geni_serial_set_manual_flow(true, port);
+#endif
 	geni_status = geni_read_reg_nolog(uport->membase, SE_GENI_STATUS);
 	IPC_LOG_MSG(port->ipc_log_misc, "%s: End 0x%x dma_dbg:0x%x\n",
 		    __func__, geni_status,
