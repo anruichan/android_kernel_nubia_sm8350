@@ -3,6 +3,9 @@
  * Copyright (c) 2012-2021, The Linux Foundation. All rights reserved.
  */
 
+#ifdef CONFIG_BOARD_NUBIA
+#define DEBUG
+#endif
 #include <linux/module.h>
 #include <linux/kernel.h>
 #include <linux/slab.h>
@@ -52,6 +55,10 @@
 #include "gadget.h"
 #include "debug.h"
 #include "xhci.h"
+#ifdef CONFIG_BOARD_NUBIA
+#include <linux/usb/nubia_usb_debug.h>
+#include <linux/soc/zte/usb_switch_dp.h>
+#endif
 
 #define SDP_CONNECTION_CHECK_TIME 10000 /* in ms */
 
@@ -404,7 +411,11 @@ static const char * const usb_role_strings[] = {
 	"DEVICE"
 };
 
+#ifdef CONFIG_BOARD_NUBIA
+struct dwc3_msm *mdwc3;
+#else
 struct dwc3_msm;
+#endif
 
 struct extcon_nb {
 	struct extcon_dev	*edev;
@@ -4164,8 +4175,18 @@ static int dwc3_msm_usb_set_role(struct device *dev, enum usb_role role)
 	struct dwc3 *dwc = platform_get_drvdata(mdwc->dwc3);
 	enum usb_role cur_role = USB_ROLE_NONE;
 
+#ifdef CONFIG_BOARD_NUBIA
+	int state;
+#endif
 	cur_role = dwc3_msm_usb_get_role(dev);
 
+#ifdef CONFIG_BOARD_NUBIA
+	get_dp_state(&state);
+	printk("dwc3_msm_usb_set_role cur_role = %d, state = %d, next_role = %d.\n", cur_role, state, role);
+	if (cur_role == USB_ROLE_HOST && state) {
+		return 0;
+	}
+#endif
 	switch (role) {
 	case USB_ROLE_HOST:
 		mdwc->vbus_active = false;
@@ -4245,6 +4266,27 @@ static ssize_t orientation_store(struct device *dev,
 
 static DEVICE_ATTR_RW(orientation);
 
+#ifdef CONFIG_BOARD_NUBIA
+static ssize_t cc_orientation_show(struct device *dev,
+		struct device_attribute *attr, char *buf)
+{
+	struct dwc3_msm *mdwc = dev_get_drvdata(dev);
+	if (mdwc->orientation_override == PHY_LANE_A)
+		return scnprintf(buf, PAGE_SIZE, "CC1\n");
+	if (mdwc->orientation_override == PHY_LANE_B)
+		return scnprintf(buf, PAGE_SIZE, "CC2\n");
+	return scnprintf(buf, PAGE_SIZE, "none\n");
+}
+static ssize_t cc_orientation_store(struct device *dev,
+		struct device_attribute *attr, const char *buf, size_t count)
+{
+	struct dwc3_msm *mdwc = dev_get_drvdata(dev);
+	if (sysfs_streq(buf, "none"))
+		mdwc->orientation_override = 0;
+	return count;
+}
+static DEVICE_ATTR_RW(cc_orientation);
+#endif
 static ssize_t mode_show(struct device *dev, struct device_attribute *attr,
 		char *buf)
 {
@@ -4606,6 +4648,16 @@ int dwc3_msm_release_ss_lane(struct device *dev, bool usb_dp_concurrent_mode)
 }
 EXPORT_SYMBOL(dwc3_msm_release_ss_lane);
 
+#ifdef CONFIG_BOARD_NUBIA
+void get_usb_state(int *state)
+{
+	if (mdwc3->in_host_mode == true)
+		*state = 1;
+	else
+		*state = 0;
+}
+EXPORT_SYMBOL(get_usb_state);
+#endif
 static int dwc3_msm_probe(struct platform_device *pdev)
 {
 	struct device_node *node = pdev->dev.of_node, *dwc3_node;
@@ -5018,6 +5070,10 @@ static int dwc3_msm_probe(struct platform_device *pdev)
 	device_create_file(&pdev->dev, &dev_attr_mode);
 	device_create_file(&pdev->dev, &dev_attr_speed);
 	device_create_file(&pdev->dev, &dev_attr_bus_vote);
+#ifdef CONFIG_BOARD_NUBIA
+	device_create_file(&pdev->dev, &dev_attr_cc_orientation);
+	mdwc3 = mdwc;
+#endif
 
 	return 0;
 
@@ -5046,6 +5102,9 @@ static int dwc3_msm_remove(struct platform_device *pdev)
 	device_remove_file(&pdev->dev, &dev_attr_mode);
 	device_remove_file(&pdev->dev, &dev_attr_speed);
 	device_remove_file(&pdev->dev, &dev_attr_bus_vote);
+#ifdef CONFIG_BOARD_NUBIA
+	device_remove_file(&pdev->dev, &dev_attr_cc_orientation);
+#endif
 
 	if (mdwc->dpdm_nb.notifier_call) {
 		regulator_unregister_notifier(mdwc->dpdm_reg, &mdwc->dpdm_nb);
@@ -5443,6 +5502,9 @@ static void dwc3_override_vbus_status(struct dwc3_msm *mdwc, bool vbus_present)
 static int dwc3_otg_start_peripheral(struct dwc3_msm *mdwc, int on)
 {
 	struct dwc3 *dwc = platform_get_drvdata(mdwc->dwc3);
+#ifdef CONFIG_BOARD_NUBIA
+	NUBIA_USB_INFO("Turn %d the gadget.\n", on);
+#endif
 
 	pm_runtime_get_sync(mdwc->dev);
 	dbg_event(0xFF, "StrtGdgt gsync",

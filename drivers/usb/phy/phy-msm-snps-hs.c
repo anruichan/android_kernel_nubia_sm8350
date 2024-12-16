@@ -3,6 +3,9 @@
  * Copyright (c) 2017-2021, The Linux Foundation. All rights reserved.
  */
 
+#ifdef CONFIG_BOARD_NUBIA
+#define DEBUG
+#endif
 #include <linux/module.h>
 #include <linux/kernel.h>
 #include <linux/err.h>

@@ -9,6 +9,9 @@
 #include "configfs.h"
 #include "u_f.h"
 #include "u_os_desc.h"
+#ifdef CONFIG_BOARD_NUBIA
+#include <linux/usb/nubia_usb_debug.h>
+#endif
 
 #ifdef CONFIG_USB_CONFIGFS_UEVENT
 #include <linux/platform_device.h>
@@ -275,8 +278,15 @@ static int unregister_gadget(struct gadget_info *gi)
 {
 	int ret;
 
+#ifdef CONFIG_BOARD_NUBIA
+	if (!gi->composite.gadget_driver.udc_name) {
+		NUBIA_USB_INFO("udc_name is null exit usb_gadget_unregister_driver flower.\n");
+		return -ENODEV;
+	}
+#else
 	if (!gi->composite.gadget_driver.udc_name)
 		return -ENODEV;
+#endif
 
 	gi->unbinding = true;
 	ret = usb_gadget_unregister_driver(&gi->composite.gadget_driver);
@@ -308,6 +318,9 @@ static ssize_t gadget_dev_desc_UDC_store(struct config_item *item,
 	mutex_lock(&gi->lock);
 
 	if (!strlen(name) || strcmp(name, "none") == 0) {
+#ifdef CONFIG_BOARD_NUBIA
+		NUBIA_USB_INFO("the prop of sys.usb.config is none,unregister_gadget.\n");
+#endif
 		ret = unregister_gadget(gi);
 		if (ret)
 			goto err;
@@ -317,6 +330,9 @@ static ssize_t gadget_dev_desc_UDC_store(struct config_item *item,
 			ret = -EBUSY;
 			goto err;
 		}
+#ifdef CONFIG_BOARD_NUBIA
+		NUBIA_USB_INFO("probe driver the prop of sys.usb.config is %s.\n", *name);
+#endif
 		gi->composite.gadget_driver.udc_name = name;
 		ret = usb_gadget_probe_driver(&gi->composite.gadget_driver);
 		if (ret) {
@@ -1578,6 +1594,9 @@ static int android_setup(struct usb_gadget *gadget,
 	spin_lock_irqsave(&cdev->lock, flags);
 	if (!gi->connected) {
 		gi->connected = 1;
+#ifdef CONFIG_BOARD_NUBIA
+		NUBIA_USB_INFO("start usb connect notify.\n");
+#endif
 		schedule_work(&gi->work);
 	}
 	spin_unlock_irqrestore(&cdev->lock, flags);
@@ -1600,6 +1619,9 @@ static int android_setup(struct usb_gadget *gadget,
 	spin_lock_irqsave(&cdev->lock, flags);
 	if (c->bRequest == USB_REQ_SET_CONFIGURATION &&
 						cdev->config) {
+#ifdef CONFIG_BOARD_NUBIA
+		NUBIA_USB_INFO("start usb configuration notify.\n");
+#endif
 		schedule_work(&gi->work);
 	}
 	spin_unlock_irqrestore(&cdev->lock, flags);
