@@ -279,19 +279,36 @@ static void print_wakeup_sources(void)
 	capture_reasons = false;
 
 	if (wakeup_reason == RESUME_ABORT) {
+#ifdef CONFIG_BOARD_NUBIA
+		pr_info("[pmdb] Abort: %s\n", non_irq_wake_reason);
+#else
 		pr_info("Abort: %s\n", non_irq_wake_reason);
+#endif
 		spin_unlock_irqrestore(&wakeup_reason_lock, flags);
 		return;
 	}
 
 	if (wakeup_reason == RESUME_IRQ && !list_empty(&leaf_irqs))
 		list_for_each_entry(n, &leaf_irqs, siblings)
+#ifdef CONFIG_BOARD_NUBIA
+			pr_info("[pmdb]Resume caused by IRQ %d, %s\n", n->irq,
+				n->irq_name);
+#else
 			pr_info("Resume caused by IRQ %d, %s\n", n->irq,
 				n->irq_name);
+#endif
 	else if (wakeup_reason == RESUME_ABNORMAL)
+#ifdef CONFIG_BOARD_NUBIA
+		pr_info("[pmdb] Resume caused by %s\n", non_irq_wake_reason);
+#else
 		pr_info("Resume caused by %s\n", non_irq_wake_reason);
+#endif
 	else
+#ifdef CONFIG_BOARD_NUBIA
+		pr_info("[pmdb] Resume cause unknown\n");
+#else
 		pr_info("Resume cause unknown\n");
+#endif
 
 	spin_unlock_irqrestore(&wakeup_reason_lock, flags);
 }
