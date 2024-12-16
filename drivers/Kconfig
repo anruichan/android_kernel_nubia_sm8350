@@ -232,4 +232,6 @@ source "drivers/counter/Kconfig"
 
 source "drivers/ese/Kconfig"
 
+source "drivers/fan/Kconfig"
+
 endmenu
