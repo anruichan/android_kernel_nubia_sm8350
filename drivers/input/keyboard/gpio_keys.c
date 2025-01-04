@@ -457,7 +457,7 @@ static void gpio_keys_gpio_report_event(struct gpio_button_data *bdata)
 #endif
 	} else {
 #ifdef CONFIG_NUBIA_KEYBOARD_GAMESWITCH
-		if (*bdata->code == SW_GAMESWITCH_CHANGE) {
+		if (*bdata->code == 0x0f) {
 			if (gs_old_state == state)
 				goto gs_old;
 			set_gameswitch(input, state);
