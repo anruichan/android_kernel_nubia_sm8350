@@ -4180,7 +4180,7 @@ static int aw8697_vibrator_init(struct aw8697 *aw8697)
 	pr_info("%s enter\n", __func__);
 
 #ifdef TIMED_OUTPUT
-	aw8697->to_dev.name = "vibrator_aw8695";
+	aw8697->to_dev.name = "vibrator";
 	aw8697->to_dev.get_time = aw8697_vibrator_get_time;
 	aw8697->to_dev.enable = aw8697_vibrator_enable;
 
@@ -4199,7 +4199,7 @@ static int aw8697_vibrator_init(struct aw8697 *aw8697)
 		return ret;
 	}
 #else
-	aw8697->cdev.name = "vibrator_aw8695";
+	aw8697->cdev.name = "vibrator";
 	aw8697->cdev.brightness_get = aw8697_haptic_brightness_get;
 	aw8697->cdev.brightness_set = aw8697_haptic_brightness_set;
 
